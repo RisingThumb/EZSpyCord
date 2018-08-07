@@ -15,3 +15,6 @@ Make a push/pull request, and add whatever new functionality you want to add. If
 - Add some chatlog scraping functionality
 
 Whoever you are reading this, I hope you take advantage of this only for its data mining functionalities. The other more malicous functions are only there as a proof of concept of what bad things could be done with the Discord Api. The most significant thing that need to be done by the Discord Api in my opinion is for the discord team to figure out some way to completely block/stop the use of selfbots. Personally my favourite part is the emoji ripping functionality.
+
+# Notes
+servers.txt is included to demonstrate how to order your server ids for any large selections of servers
