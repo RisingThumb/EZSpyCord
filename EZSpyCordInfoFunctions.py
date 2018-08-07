@@ -59,6 +59,7 @@ async def choice103(client):
                           "    Change Nickname ? : "+str(perms.change_nickname)+"\n"
                           )
     await client.logout()
+#List server channels
 async def choice104(client):
     id1 = str(input("Enter ID of server\n"))
     for server in client.servers:

