@@ -6,7 +6,7 @@ from aioconsole import ainput
 
 from EZSpyCordInfoFunctions import *
 from EZSpyCordSocialFunctions import *
-from EZSpyCordPayloadFunctions import *
+#from EZSpyCordPayloadFunctions import *
 
 def StartScreen():
     logo=(" _____ ______ _____             _____               _   _  _   \n"
@@ -59,14 +59,6 @@ def MainMenu():
                          "203 : Log chat messages in a specific server\n"
                          "204 : Log chat messages in a set of servers from a text file\n"
                          "205 : Log all chat messages into a single text file\n"
-                         "301 : Remove all channels from a specific server\n"
-                         "302 : Deletes a specific server\n"
-                         "303 : Deletes all servers the user can\n"
-                         "304 : Deletes all channels the user can\n"
-                         "305 : Bans all members from a specified server\n"
-                         "306 : Kicks all members from a specified server\n"
-                         "307 : Bans all users the user can\n"
-                         "308 : Kicks all users the user can\n"
                          "99 : Quit\n"))
         botOrNot=str(input("Is it a bot account(y/n)")).lower()
         client = discord.Client()
@@ -120,14 +112,14 @@ class running:
             elif choice == 202: await choice202(client) #Get all emojis on a server
             elif choice == 203: self.server = await choice203(client) #Initialise chat logging
             elif choice == 204: self.server = await choice204(client) #Initialise chat logging
-            elif choice == 301: await choice301(client) #Get all emojis on a server
-            elif choice == 302: await choice302(client) #Get all emojis on a server
-            elif choice == 303: await choice303(client) #Get all emojis on a server
-            elif choice == 304: await choice304(client) #Get all emojis on a server
-            elif choice == 305: await choice305(client) #Get all emojis on a server
-            elif choice == 306: await choice306(client) #Get all emojis on a server
-            elif choice == 307: await choice307(client) #Get all emojis on a server
-            elif choice == 308: await choice308(client) #Get all emojis on a server
+            #elif choice == 301: await choice301(client) #Get all emojis on a server
+            #elif choice == 302: await choice302(client) #Get all emojis on a server
+            #elif choice == 303: await choice303(client) #Get all emojis on a server
+            #elif choice == 304: await choice304(client) #Get all emojis on a server
+            #elif choice == 305: await choice305(client) #Get all emojis on a server
+            #elif choice == 306: await choice306(client) #Get all emojis on a server
+            #elif choice == 307: await choice307(client) #Get all emojis on a server
+            #elif choice == 308: await choice308(client) #Get all emojis on a server
         @client.event
         async def on_message(message):
           if   choice == 203: await choice203message(self.client,message,self.server)
